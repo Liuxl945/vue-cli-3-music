@@ -28,8 +28,9 @@
 import Scroll from "@/base/scroll/scroll";
 import Loading from "@/base/loading/loading";
 import songList from "@/base/song-list/song-list";
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 import { prefixStyle } from "@/common/js/dom";
+import { getMusicResult } from "@/api/songs";
 
 const transform = prefixStyle("transform");
 const backdrop = prefixStyle("backdrop-filter");
@@ -85,16 +86,19 @@ export default {
     back() {
       this.$router.back();
     },
-    selectItem(song,index){
+    selectItem(song, index) {
       //设置当前的
       this.selectPlay({
-        list:this.songs,
+        list: this.songs,
         index
+      });
+
+      getMusicResult(song.mid).then(res=>{
+        console.log(res)
       })
+
     },
-    ...mapActions([
-      'selectPlay'
-    ])
+    ...mapActions(["selectPlay"])
   },
   watch: {
     scrollY(newY) {
