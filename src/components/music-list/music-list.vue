@@ -28,6 +28,7 @@
 import Scroll from "@/base/scroll/scroll";
 import Loading from "@/base/loading/loading";
 import songList from "@/base/song-list/song-list";
+
 import { mapActions } from "vuex";
 import { prefixStyle } from "@/common/js/dom";
 import { getMusicResult } from "@/api/songs";
@@ -93,9 +94,9 @@ export default {
         index
       });
 
-      getMusicResult(song.mid).then(res=>{
-        console.log(res)
-      })
+      // getMusicResult(song.mid).then(res=>{
+      //   console.log(res)
+      // })
 
     },
     ...mapActions(["selectPlay"])
