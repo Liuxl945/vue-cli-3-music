@@ -6,7 +6,7 @@
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" ref="bgImage" :style="style">
       <div class="play-wrapper">
-        <div ref="playBtn" v-show="songs.length>0" class="play">
+        <div ref="playBtn" @click="random" v-show="songs.length>0" class="play">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -32,7 +32,6 @@ import songList from "@/base/song-list/song-list";
 import { mapActions } from "vuex";
 import { prefixStyle } from "@/common/js/dom";
 import { getMusicResult } from "@/api/songs";
-
 const transform = prefixStyle("transform");
 const backdrop = prefixStyle("backdrop-filter");
 
@@ -93,13 +92,13 @@ export default {
         list: this.songs,
         index
       });
-
-      // getMusicResult(song.mid).then(res=>{
-      //   console.log(res)
-      // })
-
     },
-    ...mapActions(["selectPlay"])
+    random() {
+      this.randomPlay({
+        list: this.songs,
+      });
+    },
+    ...mapActions(["selectPlay", "randomPlay"])
   },
   watch: {
     scrollY(newY) {

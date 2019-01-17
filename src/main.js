@@ -10,10 +10,7 @@ import fastclick from 'fastclick'
 
 import '@/common/font/icon.css'
 
-
-
 fastclick.attach(document.body)
-
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
