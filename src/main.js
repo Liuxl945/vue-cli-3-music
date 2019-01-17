@@ -11,8 +11,11 @@ import fastclick from 'fastclick'
 import '@/common/font/icon.css'
 
 
+
 fastclick.attach(document.body)
-Vue.use(VueLazyload,{
+
+
+Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: require('@/common/image/default.png'),
   loading: require('@/common/image/default.png'),
@@ -27,6 +30,8 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
 })
