@@ -63,7 +63,7 @@
               <i :class="playIcon" @click="togglePlaying"></i>
             </div>
             <div class="icon i-right" :class="disableClass">
-              <i class="icon-next" @click="next" ></i>
+              <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
               <i class="icon icon-not-favorite"></i>
@@ -91,18 +91,25 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="songsUrl" @canplay="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
+    <audio
+      ref="audio"
+      :src="songsUrl"
+      @canplay="ready"
+      @error="error"
+      @timeupdate="updateTime"
+      @ended="end"
+    ></audio>
   </div>
 </template>
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations } from "vuex";
 import { prefixStyle } from "common/js/dom";
-import { getMusicResult } from "@/api/songs";
+import { getMusicResult, getLyric } from "@/api/songs";
 import { ERR_OK } from "@/api/config";
 import { playMode } from "@/common/js/config";
 import { shuffle } from "@/common/js/util";
 import animations from "create-keyframe-animation";
-
+import { Base64 } from "js-base64";
 import ProgressBar from "@/base/progress-bar/progress-bar";
 import ProgressCircle from "@/base/progress-circle/progress-circle";
 
@@ -113,6 +120,7 @@ export default {
   data() {
     return {
       songsUrl: null,
+      songsLyric: null,
       songReady: false,
       currentTime: 0,
       radius: 32
@@ -307,7 +315,9 @@ export default {
     iconMode() {
       return this.mode === playMode.sequence
         ? "icon-sequence"
-        : this.mode === playMode.loop ? "icon-loop" : "icon-random";
+        : this.mode === playMode.loop
+        ? "icon-loop"
+        : "icon-random";
     },
     ...mapGetters([
       "fullScreen",
@@ -324,6 +334,12 @@ export default {
       if (newSong.id === oldSong.id) {
         return;
       }
+      getLyric(this.currentSong.mid).then(res => {
+        if (res.code === ERR_OK) {
+          this.songsLyric = Base64.decode(res.lyric);
+          console.log(this.songsLyric)
+        }
+      });
       getMusicResult(this.currentSong.mid).then(res => {
         if (res.code === ERR_OK) {
           this.songsUrl = `http://dl.stream.qqmusic.qq.com/${

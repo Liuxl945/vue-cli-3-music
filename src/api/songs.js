@@ -24,3 +24,22 @@ export function getMusicResult(songmid) {
     return Promise.resolve(res.data)
   })
 }
+
+export function getLyric(mid) {
+  const url = '/Lyric'
+
+  const data = Object.assign({}, commonParams, {
+    songmid: mid,
+    pcachetime: +new Date(),
+    platform: "yqq.json",
+    needNewCode: 0,
+    loginUin: 0,
+    hostUin: 0,
+    "-": "MusicJsonCallback_lrc"
+  })
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

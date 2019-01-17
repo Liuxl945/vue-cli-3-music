@@ -23,6 +23,7 @@
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-service": "^3.3.0",
     "babel-polyfill": "^6.26.0",
+    "js-base64": "^2.5.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.5.21"
