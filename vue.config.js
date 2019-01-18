@@ -10,9 +10,11 @@ module.exports = {
   // lintOnSave: true,
   chainWebpack: (config) => {
     config.resolve.alias
-      .set('vue$','vue/dist/vue.esm.js')
+      .set('vue$', 'vue/dist/vue.esm.js')
       .set('@', resolve('src'))
       .set('common', resolve("src/common"))
+      .set('api', resolve("src/api"))
+      .set('base', resolve("src/base"))
   },
   devServer: {
     before(app) {
@@ -44,9 +46,9 @@ module.exports = {
           console.log(e)
         })
       })
-      app.get('/getMusicResult',(req,res)=>{
+      app.get('/getMusicResult', (req, res) => {
         const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
-        axios.get(url,{
+        axios.get(url, {
           headers: {
             referer: 'https://y.qq.com/portal/player.html',
             origin: 'https://y.qq.com'
@@ -59,13 +61,43 @@ module.exports = {
         })
 
       })
-      app.get("/Lyric",(req,res)=>{
+      app.get("/Lyric", (req, res) => {
         const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
 
-        axios.get(url,{
+        axios.get(url, {
           headers: {
             referer: 'https://y.qq.com/portal/player.html',
             origin: 'https://y.qq.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log(e)
+        })
+      })
+      app.get('/disstList', (req, res) => {
+        const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+
+        axios.get(url, {
+          headers: {
+            referer: `https://y.qq.com/n/yqq/playlist`,
+            origin: 'https://y.qq.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log(e)
+        })
+      })
+      app.get("/TopList",(req,res)=>{
+        const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg'
+        
+        axios.get(url, {
+          headers: {
+            referer: `https://m.y.qq.com/`,
+            origin: 'https://m.y.qq.com'
           },
           params: req.query
         }).then(response => {

@@ -29,6 +29,7 @@ import Scroll from "@/base/scroll/scroll";
 import Loading from "@/base/loading/loading";
 import songList from "@/base/song-list/song-list";
 
+import { playlistMixin } from "@/common/js/mixin";
 import { mapActions } from "vuex";
 import { prefixStyle } from "@/common/js/dom";
 import { getMusicResult } from "@/api/songs";
@@ -37,6 +38,7 @@ const backdrop = prefixStyle("backdrop-filter");
 
 const RESERVED_HEIGHT = 40;
 export default {
+  mixins: [playlistMixin],
   props: {
     bgImage: {
       type: String,
@@ -95,8 +97,13 @@ export default {
     },
     random() {
       this.randomPlay({
-        list: this.songs,
+        list: this.songs
       });
+    },
+    handlePlaylist(playlist) {
+      const bottom = playlist.length ? "60px" : "";
+      this.$refs.list.$el.style.bottom = bottom;
+      this.$refs.list.refresh();
     },
     ...mapActions(["selectPlay", "randomPlay"])
   },

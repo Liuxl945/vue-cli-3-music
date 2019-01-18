@@ -1,0 +1,50 @@
+{
+  "albumdesc": "",
+  "albumid": 1458791,
+  "albummid": "003RMaRI1iFoYd",
+  "albumname": "周杰伦的床边故事",
+  "alertid": 21,
+  "belongCD": 8,
+  "cdIdx": 0,
+  "interval": 215,
+  "isonly": 1,
+  "label": "4611686018435776513",
+  "msgid": 14,
+  "pay": {
+    "payalbum": 1,
+    "payalbumprice": 2000,
+    "paydownload": 1,
+    "payinfo": 1,
+    "payplay": 0,
+    "paytrackmouth": 1,
+    "paytrackprice": 200,
+    "timefree": 0
+  },
+  "preview": {
+    "trybegin": 65138,
+    "tryend": 85421,
+    "trysize": 0
+  },
+  "rate": 31,
+  "singer": [{
+    "id": 4558,
+    "mid": "0025NhlN2yWrP4",
+    "name": "周杰伦"
+  }],
+  "size128": 3443771,
+  "size320": 8608939,
+  "size5_1": 0,
+  "sizeape": 24929083,
+  "sizeflac": 24971563,
+  "sizeogg": 5001304,
+  "songid": 107192078,
+  "songmid": "003OUlho2HcRHC",
+  "songname": "告白气球",
+  "songorig": "告白气球",
+  "songtype": 0,
+  "strMediaMid": "003OUlho2HcRHC",
+  "stream": 13,
+  "switch": 17413891,
+  "type": 0,
+  "vid": "u00222le4ox"
+}

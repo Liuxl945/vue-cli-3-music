@@ -18,7 +18,7 @@
           <h1 class="title" v-html="currentSong.name"></h1>
           <h2 class="subtitle" v-html="currentSong.singer"></h2>
         </div>
-        <div class="middle">
+        <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove" @touchend="middleTouchEnd">
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdClass">
@@ -26,24 +26,24 @@
               </div>
             </div>
             <div class="playing-lyric-wrapper">
-              <div class="playing-lyric"></div>
+              <div class="playing-lyric">{{playingLyric}}</div>
             </div>
           </div>
-          <!-- <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
-          <div class="lyric-wrapper">
-            <div v-if="currentLyric">
-              <p ref="lyricLine"
-                class="text"
-                :class="{'current': currentLineNum ===index}"
-                v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+          <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
+            <div class="lyric-wrapper">
+              <div v-if="currentLyric">
+                <p ref="lyricLine"
+                  class="text"
+                  :class="{'current':currentLineNum === index}"
+                  v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+              </div>
             </div>
-          </div>
-          </scroll>-->
+          </scroll>
         </div>
         <div class="bottom">
           <div class="dot-wrapper">
-            <span class="dot"></span>
-            <span class="dot"></span>
+            <span class="dot" :class="{'active':currentShow === 'cd'}"></span>
+            <span class="dot" :class="{'active':currentShow === 'lyric'}"></span>
           </div>
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
@@ -110,7 +110,9 @@ import { playMode } from "@/common/js/config";
 import { shuffle } from "@/common/js/util";
 import animations from "create-keyframe-animation";
 import { Base64 } from "js-base64";
+import LyricParser from "lyric-parser";
 import ProgressBar from "@/base/progress-bar/progress-bar";
+import Scroll from "@/base/scroll/scroll";
 import ProgressCircle from "@/base/progress-circle/progress-circle";
 
 const transform = prefixStyle("transform");
@@ -120,18 +122,92 @@ export default {
   data() {
     return {
       songsUrl: null,
-      songsLyric: null,
+      currentLyric: null,
       songReady: false,
       currentTime: 0,
-      radius: 32
+      radius: 32,
+      currentLineNum: 0,
+      currentShow: "cd",
+      playingLyric: ""
     };
   },
   components: {
     ProgressBar,
-    ProgressCircle
+    ProgressCircle,
+    Scroll
   },
-  created() {},
+  created() {
+    this.touch = {};
+  },
   methods: {
+    middleTouchStart(e) {
+      this.touch.initiated = true;
+      // 用来判断是否是一次移动
+      this.touch.moved = false;
+      const touch = e.touches[0];
+      this.touch.startX = touch.pageX;
+      this.touch.startY = touch.pageY;
+    },
+    middleTouchMove(e) {
+      if (!this.touch.initiated) {
+        return;
+      }
+      const touch = e.touches[0];
+      const dataX = touch.pageX - this.touch.startX;
+      const dataY = touch.pageY - this.touch.startY;
+      if (Math.abs(dataY) > Math.abs(dataX)) {
+        return;
+      }
+      if (!this.touch.moved) {
+        this.touch.moved = true;
+      }
+      const left = this.currentShow === "cd" ? 0 : -window.innerWidth;
+      const offsetWidth = Math.min(
+        0,
+        Math.max(-window.innerWidth, left + dataX)
+      );
+      this.touch.percent = Math.abs(offsetWidth / window.innerWidth);
+      this.$refs.lyricList.$el.style[
+        transform
+      ] = `translate3d(${offsetWidth}px,0,0)`;
+      this.$refs.lyricList.$el.style[transitionDuration] = 0;
+      this.$refs.middleL.style.opacity = 1 - this.touch.percent;
+      this.$refs.middleL.style[transitionDuration] = 0;
+    },
+    middleTouchEnd(e) {
+      if (!this.touch.moved) {
+        return;
+      }
+      let offsetWidth;
+      let opacity;
+      if (this.currentShow === "cd") {
+        if (this.touch.percent > 0.1) {
+          offsetWidth = -window.innerWidth;
+          opacity = 0;
+          this.currentShow = "lyric";
+        } else {
+          offsetWidth = 0;
+          opacity = 1;
+        }
+      } else {
+        if (this.touch.percent < 0.9) {
+          offsetWidth = 0;
+          this.currentShow = "cd";
+          opacity = 1;
+        } else {
+          offsetWidth = -window.innerWidth;
+          opacity = 0;
+        }
+      }
+      const time = 300;
+      this.$refs.lyricList.$el.style[
+        transform
+      ] = `translate3d(${offsetWidth}px,0,0)`;
+      this.$refs.lyricList.$el.style[transitionDuration] = `${time}ms`;
+      this.$refs.middleL.style.opacity = opacity;
+      this.$refs.middleL.style[transitionDuration] = `${time}ms`;
+      this.touch.initiated = false;
+    },
     enter(el, done) {
       const { x, y, scale } = this._getPosAndScale();
 
@@ -184,13 +260,17 @@ export default {
       if (!this.songReady) {
         return false;
       }
-      let index = this.currentIndex + 1;
-      if (index === this.playlist.length) {
-        index = 0;
-      }
-      this.setCurrentIndex(index);
-      if (!this.playing) {
-        this.togglePlaying();
+      if (this.playlist.length === 1) {
+        loop();
+      } else {
+        let index = this.currentIndex + 1;
+        if (index === this.playlist.length) {
+          index = 0;
+        }
+        this.setCurrentIndex(index);
+        if (!this.playing) {
+          this.togglePlaying();
+        }
       }
       this.songReady = false;
     },
@@ -198,13 +278,17 @@ export default {
       if (!this.songReady) {
         return false;
       }
-      let index = this.currentIndex - 1;
-      if (index === -1) {
-        index = this.playlist.length - 1;
-      }
-      this.setCurrentIndex(index);
-      if (!this.playing) {
-        this.togglePlaying();
+      if (this.playlist.length === 1) {
+        loop();
+      } else {
+        let index = this.currentIndex - 1;
+        if (index === -1) {
+          index = this.playlist.length - 1;
+        }
+        this.setCurrentIndex(index);
+        if (!this.playing) {
+          this.togglePlaying();
+        }
       }
       this.songReady = false;
     },
@@ -218,6 +302,9 @@ export default {
     loop() {
       this.$refs.audio.currentTime = 0;
       this.$refs.audio.play();
+      if (this.currentLyric) {
+        this.currentLyric.seek(0);
+      }
     },
     ready() {
       this.songReady = true;
@@ -240,12 +327,18 @@ export default {
       if (!this.playing) {
         this.togglePlaying();
       }
-      // if (this.currentLyric) {
-      //   this.currentLyric.seek(currentTime * 1000);
-      // }
+      if (this.currentLyric) {
+        this.currentLyric.seek(currentTime * 1000);
+      }
     },
     togglePlaying() {
+      if (!this.songReady) {
+        return;
+      }
       this.setPlayingState(!this.playing);
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay();
+      }
     },
     changeMode() {
       const mode = (this.mode + 1) % 3;
@@ -315,9 +408,7 @@ export default {
     iconMode() {
       return this.mode === playMode.sequence
         ? "icon-sequence"
-        : this.mode === playMode.loop
-        ? "icon-loop"
-        : "icon-random";
+        : this.mode === playMode.loop ? "icon-loop" : "icon-random";
     },
     ...mapGetters([
       "fullScreen",
@@ -334,20 +425,41 @@ export default {
       if (newSong.id === oldSong.id) {
         return;
       }
-      getLyric(this.currentSong.mid).then(res => {
-        if (res.code === ERR_OK) {
-          this.songsLyric = Base64.decode(res.lyric);
-          console.log(this.songsLyric)
-        }
-      });
+      if (this.currentLyric) {
+        this.currentLyric.stop();
+      }
+      getLyric(this.currentSong.mid)
+        .then(res => {
+          if (res.code === ERR_OK) {
+            let Lyric = Base64.decode(res.lyric);
+            this.currentLyric = new LyricParser(Lyric, res => {
+              this.currentLineNum = res.lineNum;
+              if (res.lineNum > 5) {
+                let lineEl = this.$refs.lyricLine[res.lineNum - 5];
+                this.$refs.lyricList.scrollToElement(lineEl, 1000);
+              } else {
+                this.$refs.lyricList.scrollTo(0, 0, 1000);
+              }
+              this.playingLyric = res.txt;
+            });
+            if (this.playing) {
+              this.currentLyric.play();
+            }
+          }
+        })
+        .catch(() => {
+          this.currentLyric = null;
+          this.playingLyric = "";
+          this.currentLineNum = 0;
+        });
       getMusicResult(this.currentSong.mid).then(res => {
         if (res.code === ERR_OK) {
           this.songsUrl = `http://dl.stream.qqmusic.qq.com/${
             res.req_0.data.midurlinfo[0].purl
           }`;
-          this.$nextTick(() => {
+          setTimeout(() => {
             this.$refs.audio.play();
-          });
+          }, 1000);
         }
       });
     },
