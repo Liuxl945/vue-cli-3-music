@@ -106,6 +106,21 @@ module.exports = {
           console.log(e)
         })
       })
+      app.get("/getSearch",(req,res)=>{
+        const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+
+        axios.get(url, {
+          headers: {
+            referer: `https://m.y.qq.com/?ADTAG=myqq`,
+            origin: 'https://m.y.qq.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log(e)
+        })
+      })
     }
   },
 }

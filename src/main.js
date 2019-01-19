@@ -6,11 +6,11 @@ import App from './App'
 import store from './store'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
-import fastclick from 'fastclick'
+// import fastclick from 'fastclick'
 
 import '@/common/font/icon.css'
 
-fastclick.attach(document.body)
+// fastclick.attach(document.body)
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
