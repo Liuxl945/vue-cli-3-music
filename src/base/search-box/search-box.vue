@@ -15,12 +15,11 @@ export default {
     placeholder: {
       type: String,
       default: "搜索歌曲、歌手"
+    },
+    query:{
+      type:String,
+      default:""
     }
-  },
-  data() {
-    return {
-      query: ""
-    };
   },
   methods: {
     clear() {

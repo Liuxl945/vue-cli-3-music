@@ -28,6 +28,7 @@
     <div class="search-result" v-show="query" ref="searchResult">
       <suggest ref="suggest" :query="query"></suggest>
     </div>
+    <router-view/>
   </div>
 </template>
 
@@ -54,8 +55,8 @@ export default {
     onQueryChange(query) {
       this.query = query;
     },
-    addQuery(item) {
-      console.log(111);
+    addQuery(query) {
+      this.query = query;
     },
     _getHotKey() {
       getHotKey().then(res => {
