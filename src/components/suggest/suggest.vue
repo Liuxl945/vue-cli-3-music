@@ -11,6 +11,9 @@
       </li>
       <loading v-show="hasMore" title></loading>
     </ul>
+    <div class="no-result-wrapper" v-show="!hasMore && !result.length">
+      <no-result :title="'抱歉，暂无搜索结果'"></no-result>
+    </div>
   </scroll>
 </template>
 
@@ -22,6 +25,7 @@ import { ERR_OK } from "api/config";
 import { createSong } from "common/js/song";
 import { mapMutations, mapActions } from "vuex";
 import Singer from "@/common/js/singer";
+import NoResult from "@/base/no-result/no-result";
 
 const TYPE_SINGER = "singer";
 const perpage = 20;
@@ -118,7 +122,6 @@ export default {
       if (data.song) {
         ret = ret.concat(this._normalizeSongs(data.song.list));
       }
-      console.log(ret);
       return ret;
     },
     _normalizeSongs(list) {
@@ -142,7 +145,8 @@ export default {
   },
   components: {
     Scroll,
-    Loading
+    Loading,
+    NoResult,
   }
 };
 </script>
