@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search-box-wrapper">
-      <search-box ref="searchBox" @query="onQueryChange" :query="query"></search-box>
+      <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
     <div ref="shortcutWrapper" v-show="!query" class="shortcut-wrapper">
       <div  ref="shortcut" class="shortcut">
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="search-result" v-show="query" ref="searchResult">
-      <suggest ref="suggest" :query="query"></suggest>
+      <suggest ref="suggest" :query="query" @listScroll="blurInput"></suggest>
     </div>
     <router-view/>
   </div>
@@ -52,6 +52,9 @@ export default {
     this._getHotKey();
   },
   methods: {
+    blurInput(){
+      this.$refs.searchBox.blur();
+    },
     onQueryChange(query) {
       this.query = query;
     },
@@ -62,7 +65,6 @@ export default {
       getHotKey().then(res => {
         if (res.code === ERR_OK) {
           this.hotKey = res.data.hotkey.slice(0, 10);
-          console.log(res.data);
         }
       });
     }

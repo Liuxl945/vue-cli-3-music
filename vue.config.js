@@ -59,7 +59,6 @@ module.exports = {
         }).catch(e => {
           console.log(e)
         })
-
       })
       app.get("/Lyric", (req, res) => {
         const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'

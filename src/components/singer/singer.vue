@@ -37,7 +37,6 @@ export default {
       this.$refs.list.refresh();
     },
     selectSinger(item) {
-      console.log(item);
       this.$router.push({
         path: `/singer/${item.id}`
       });
@@ -47,7 +46,6 @@ export default {
     _getSingerList() {
       getSingerList().then(res => {
         if (res.code === ERR_OK) {
-          console.log(res);
           this.singers = this._nomallizeSinger(res.data.list);
         }
       });
