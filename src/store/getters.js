@@ -21,3 +21,4 @@ export const currentSong = state => {
 }
 
 export const searchHistory = state => state.searchHistory
+

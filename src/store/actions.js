@@ -6,6 +6,10 @@ import {
   shuffle
 } from "@/common/js/util"
 
+import {
+  saveSearch
+} from "@/common/js/cache"
+
 function findIndex(list, song) {
   return list.findIndex(item => {
     return item.id === song.id
@@ -48,7 +52,10 @@ export const randomPlay = function ({
   commit(types.SET_PLAYING_STATE, true)
 }
 
-export const insertSong = function ({commit, state},song) {
+export const insertSong = function ({
+  commit,
+  state
+}, song) {
   let playlist = state.playlist.slice()
   let sequenceList = state.sequenceList.slice()
   let currentIndex = state.currentIndex
@@ -93,6 +100,8 @@ export const insertSong = function ({commit, state},song) {
 }
 
 
-export const SaveSearchHistory = function({commit},query){
-  
+export const SaveSearchHistory = function ({
+  commit
+}, query) {
+  commit(types.SET_SEARCH_HISTORY,saveSearch(query))
 }

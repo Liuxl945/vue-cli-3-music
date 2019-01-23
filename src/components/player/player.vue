@@ -261,7 +261,7 @@ export default {
         return false;
       }
       if (this.playlist.length === 1) {
-        loop();
+        this.loop();
       } else {
         let index = this.currentIndex + 1;
         if (index === this.playlist.length) {
@@ -279,7 +279,7 @@ export default {
         return false;
       }
       if (this.playlist.length === 1) {
-        loop();
+        this.loop();
       } else {
         let index = this.currentIndex - 1;
         if (index === -1) {
