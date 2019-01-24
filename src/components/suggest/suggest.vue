@@ -107,6 +107,9 @@ export default {
         return `${item.name}-${item.singer}`;
       }
     },
+    refresh(){
+      this.$refs.suggest.refresh();
+    },
     _checkMore(data) {
       const song = data.song;
       if (

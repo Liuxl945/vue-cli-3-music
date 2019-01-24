@@ -7,7 +7,9 @@ import {
 } from "@/common/js/util"
 
 import {
-  saveSearch
+  saveSearch,
+  deletSearch,
+  clearSearch
 } from "@/common/js/cache"
 
 function findIndex(list, song) {
@@ -103,5 +105,17 @@ export const insertSong = function ({
 export const SaveSearchHistory = function ({
   commit
 }, query) {
-  commit(types.SET_SEARCH_HISTORY,saveSearch(query))
+  commit(types.SET_SEARCH_HISTORY, saveSearch(query))
+}
+
+export const deleteSearchHistory = function ({
+  commit
+}, query) {
+  commit(types.SET_SEARCH_HISTORY, deletSearch(query))
+}
+
+export const clearSearchHistory = function ({
+  commit
+}) {
+  commit(types.SET_SEARCH_HISTORY, clearSearch())
 }

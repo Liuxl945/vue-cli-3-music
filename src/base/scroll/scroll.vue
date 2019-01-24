@@ -29,9 +29,13 @@ export default {
       type: Boolean,
       default: false
     },
-    beforScroll:{
-      type:Boolean,
-      default:false
+    beforScroll: {
+      type: Boolean,
+      default: false
+    },
+    refreshDelay: {
+      type: Number,
+      default: 20
     }
   },
   mounted() {
@@ -62,10 +66,10 @@ export default {
           }
         });
       }
-      if(this.beforScroll){
-        this.scroll.on("beforeScrollStart",()=>{
+      if (this.beforScroll) {
+        this.scroll.on("beforeScrollStart", () => {
           this.$emit("beforeScroll");
-        })
+        });
       }
     },
     enable() {
@@ -88,7 +92,7 @@ export default {
     data() {
       setTimeout(() => {
         this.refresh();
-      }, 20);
+      }, this.refreshDelay);
     }
   }
 };

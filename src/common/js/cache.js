@@ -5,10 +5,10 @@ const SEARCH_MAX_LENGTH = 15
 
 /**
  * 
- * @param {数组} arr 
- * @param {*} val 
- * @param {函数} compare 
- * @param {*} maxLen 
+ * @param {Array}     arr 
+ * @param {String}    val 
+ * @param {Function}  compare 
+ * @param {Number}    maxLen 
  */
 function insertArray(arr, val, compare, maxLen) {
   const index = arr.findIndex(compare)
@@ -24,6 +24,14 @@ function insertArray(arr, val, compare, maxLen) {
   }
 }
 
+function deleteFromArray(arr, compare) {
+  const index = arr.findIndex(compare)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
+}
+
+
 export function saveSearch(query) {
   let searches = storege.get(SEARCH_KEY, [])
   insertArray(searches, query, item => {
@@ -32,4 +40,23 @@ export function saveSearch(query) {
 
   storege.set(SEARCH_KEY, searches)
   return searches
+}
+
+export function loadSearch() {
+  let searches = storege.get(SEARCH_KEY, [])
+  return searches
+}
+
+export function deletSearch(query) {
+  let searches = storege.get(SEARCH_KEY, [])
+  deleteFromArray(searches, item => {
+    return item === query
+  })
+  storege.set(SEARCH_KEY, searches)
+  return searches
+}
+
+export function clearSearch() {
+  storege.remove(SEARCH_KEY)
+  return []
 }
