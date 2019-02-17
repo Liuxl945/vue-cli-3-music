@@ -1,7 +1,9 @@
-import storege from "good-storage"
+import Storage from "good-storage"
 
 const SEARCH_KEY = "__search__"
 const SEARCH_MAX_LENGTH = 15
+const PLAY_MAX_LENGTH = 30
+const PLAY_KEY = "__play__"
 
 /**
  * 
@@ -33,30 +35,44 @@ function deleteFromArray(arr, compare) {
 
 
 export function saveSearch(query) {
-  let searches = storege.get(SEARCH_KEY, [])
+  let searches = Storage.get(SEARCH_KEY, [])
   insertArray(searches, query, item => {
     return item === query
   }, SEARCH_MAX_LENGTH)
 
-  storege.set(SEARCH_KEY, searches)
+  Storage.set(SEARCH_KEY, searches)
   return searches
 }
 
 export function loadSearch() {
-  let searches = storege.get(SEARCH_KEY, [])
+  let searches = Storage.get(SEARCH_KEY, [])
   return searches
 }
 
 export function deletSearch(query) {
-  let searches = storege.get(SEARCH_KEY, [])
+  let searches = Storage.get(SEARCH_KEY, [])
   deleteFromArray(searches, item => {
     return item === query
   })
-  storege.set(SEARCH_KEY, searches)
+  Storage.set(SEARCH_KEY, searches)
   return searches
 }
 
 export function clearSearch() {
-  storege.remove(SEARCH_KEY)
+  Storage.remove(SEARCH_KEY)
   return []
 }
+
+export function loadPlay() {
+  return Storage.get(PLAY_KEY, []);
+}
+
+export function savePlay(song) {
+  let songs = Storage.get(PLAY_KEY, []);
+  insertArray(songs, song, item => {
+    item.id === song.id
+  }, PLAY_MAX_LENGTH)
+  Storage.set(PLAY_KEY, songs)
+  return songs
+}
+

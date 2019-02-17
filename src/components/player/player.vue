@@ -18,7 +18,12 @@
           <h1 class="title" v-html="currentSong.name"></h1>
           <h2 class="subtitle" v-html="currentSong.singer"></h2>
         </div>
-        <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove" @touchend="middleTouchEnd">
+        <div
+          class="middle"
+          @touchstart.prevent="middleTouchStart"
+          @touchmove.prevent="middleTouchMove"
+          @touchend="middleTouchEnd"
+        >
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdClass">
@@ -32,10 +37,12 @@
           <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
-                <p ref="lyricLine"
+                <p
+                  ref="lyricLine"
                   class="text"
                   :class="{'current':currentLineNum === index}"
-                  v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                  v-for="(line,index) in currentLyric.lines"
+                >{{line.txt}}</p>
               </div>
             </div>
           </scroll>
@@ -86,11 +93,12 @@
             <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlayList">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <play-list ref="playlist"></play-list>
     <audio
       ref="audio"
       :src="songsUrl"
@@ -102,23 +110,25 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import { prefixStyle } from "common/js/dom";
 import { getMusicResult, getLyric } from "@/api/songs";
 import { ERR_OK } from "@/api/config";
 import { playMode } from "@/common/js/config";
-import { shuffle } from "@/common/js/util";
+import { playerMixin } from "@/common/js/mixin";
 import animations from "create-keyframe-animation";
 import { Base64 } from "js-base64";
 import LyricParser from "lyric-parser";
 import ProgressBar from "@/base/progress-bar/progress-bar";
 import Scroll from "@/base/scroll/scroll";
 import ProgressCircle from "@/base/progress-circle/progress-circle";
+import PlayList from "@/components/playlist/playlist";
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
 
 export default {
+  mixins: [playerMixin],
   data() {
     return {
       songsUrl: null,
@@ -134,12 +144,16 @@ export default {
   components: {
     ProgressBar,
     ProgressCircle,
-    Scroll
+    Scroll,
+    PlayList
   },
   created() {
     this.touch = {};
   },
   methods: {
+    showPlayList() {
+      this.$refs.playlist.show();
+    },
     middleTouchStart(e) {
       this.touch.initiated = true;
       // 用来判断是否是一次移动
@@ -308,6 +322,7 @@ export default {
     },
     ready() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong);
     },
     error() {
       this.songReady = true;
@@ -340,24 +355,6 @@ export default {
         this.currentLyric.togglePlay();
       }
     },
-    changeMode() {
-      const mode = (this.mode + 1) % 3;
-      this.setPlayMode(mode);
-      let list = null;
-      if (mode === playMode.random) {
-        list = shuffle(this.sequenceList);
-      } else {
-        list = this.sequenceList;
-      }
-      this._resetCurrentIndex(list);
-      this.setPlayList(list);
-    },
-    _resetCurrentIndex(list) {
-      let index = list.findIndex(item => {
-        return item.id === this.currentSong.id;
-      });
-      this.setCurrentIndex(index);
-    },
     _pad(num, n = 2) {
       let length = num.toString().length;
       while (length < n) {
@@ -383,11 +380,8 @@ export default {
     },
     ...mapMutations({
       setFullScreen: "SET_FULL_SCREEN",
-      setPlayingState: "SET_PLAYING_STATE",
-      setCurrentIndex: "SET_CURRENT_INDEX",
-      setPlayMode: "SET_PLAY_MODE",
-      setPlayList: "SET_PLAYLIST"
-    })
+    }),
+    ...mapActions(["savePlayHistory"])
   },
   computed: {
     playIcon() {
@@ -405,23 +399,17 @@ export default {
     percent() {
       return this.currentTime / this.currentSong.dration;
     },
-    iconMode() {
-      return this.mode === playMode.sequence
-        ? "icon-sequence"
-        : this.mode === playMode.loop ? "icon-loop" : "icon-random";
-    },
     ...mapGetters([
       "fullScreen",
-      "playlist",
-      "currentSong",
       "playing",
       "currentIndex",
-      "mode",
-      "sequenceList"
     ])
   },
   watch: {
     currentSong(newSong, oldSong) {
+      if (!newSong.id) {
+        return;
+      }
       if (newSong.id === oldSong.id) {
         return;
       }
