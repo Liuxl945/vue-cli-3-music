@@ -1,10 +1,16 @@
 import Storage from "good-storage"
+import {
+  EXDEV
+} from "constants";
 
 const SEARCH_KEY = "__search__"
 const SEARCH_MAX_LENGTH = 15
-const PLAY_MAX_LENGTH = 30
-const PLAY_KEY = "__play__"
 
+const PLAY_KEY = "__play__"
+const PLAY_MAX_LENGTH = 200
+
+const FAVORITE_KEY = "__favorite__"
+const FAVORITE_MAX_LENGTH = 200
 /**
  * 
  * @param {Array}     arr 
@@ -76,3 +82,23 @@ export function savePlay(song) {
   return songs
 }
 
+export function saveFavorite(song) {
+  let songs = Storage.get(FAVORITE_KEY, []);
+  insertArray(songs, song, item => {
+    item.id === song.id
+  }, FAVORITE_MAX_LENGTH)
+  Storage.set(FAVORITE_KEY, songs)
+  return songs
+}
+
+export function loadFavorite() {
+  return Storage.get(FAVORITE_KEY, []);
+}
+
+export function deleteFavorite(song) {
+  let songs = Storage.get(FAVORITE_KEY, []);
+  deleteFromArray(songs,item=>{
+    return item.id === song.id
+  })
+  return songs
+}

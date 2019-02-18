@@ -4,7 +4,7 @@
       <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
     <div ref="shortcutWrapper" v-show="!query" class="shortcut-wrapper">
-      <scroll ref="shortcut" class="shortcut" :data="shortcut">
+      <scroll ref="shortcut" class="shortcut" :data="shortcut" :refreshDelay="refreshDelay">
         <div>
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
@@ -30,6 +30,12 @@
       <suggest ref="suggest" @select="saveSearch" :query="query" @listScroll="blurInput"></suggest>
     </div>
     <confirm ref="confirm" @confirm="clearSearchHistory" text="是否清空所有搜索历史" confirmBtnText="清空"></confirm>
+    <top-tip ref="topTip">
+      <div class="tip-title">
+        <i class="icon-ok"></i>
+        <span class="text">1首歌曲已经添加到播放列表</span>
+      </div>
+    </top-tip>
     <router-view/>
   </div>
 </template>
@@ -41,7 +47,9 @@ import { getHotKey } from "@/api/search";
 import { ERR_OK } from "api/config";
 import Suggest from "@/components/suggest/suggest";
 import Confirm from "@/base/confirm/confirm";
+import TopTip from "base/top-tip/top-tip";
 import Scroll from "@/base/scroll/scroll";
+
 import { mapActions } from "vuex";
 import { playlistMixin, searchMixin } from "common/js/mixin";
 export default {
@@ -51,7 +59,8 @@ export default {
     Suggest,
     SearchList,
     Scroll,
-    Confirm
+    Confirm,
+    TopTip
   },
   data() {
     return {
@@ -174,6 +183,22 @@ export default {
     width: 100%;
     top: 178px;
     bottom: 0;
+  }
+  .tip-title {
+    text-align: center;
+    padding: 18px 0;
+    font-size: 0;
+
+    .icon-ok {
+      font-size: $font-size-medium;
+      color: $color-theme;
+      margin-right: 4px;
+    }
+
+    .text {
+      font-size: $font-size-medium;
+      color: $color-text;
+    }
   }
 }
 </style>

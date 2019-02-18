@@ -23,6 +23,7 @@
             class="list-scroll"
             v-if="currentIndex === 1"
             :data="searchHistory"
+            :refreshDelay="refreshDelay"
           >
             <div class="list-inner">
               <search-list
@@ -43,6 +44,12 @@
           @listScroll="blurInput"
         ></suggest>
       </div>
+      <top-tip ref="topTip">
+        <div class="tip-title">
+          <i class="icon-ok"></i>
+          <span class="text">1首歌曲已经添加到播放列表</span>
+        </div>
+      </top-tip>
     </div>
   </transition>
 </template>
@@ -51,6 +58,7 @@
 import SearchBox from "@/base/search-box/search-box";
 import Suggest from "@/components/suggest/suggest";
 import Switches from "@/base/switches/switches";
+import TopTip from 'base/top-tip/top-tip';
 import { searchMixin } from "common/js/mixin";
 import SearchList from "base/search-list/search-list";
 import Scroll from "base/scroll/scroll";
@@ -65,7 +73,8 @@ export default {
     Switches,
     Scroll,
     SongList,
-    SearchList
+    SearchList,
+    TopTip
   },
   data() {
     return {
@@ -94,6 +103,7 @@ export default {
     },
     selectSong(song, index) {
       if (index !== 0) {
+        this.showTip();
         this.insertSong(new Song(song));
       }
     },
