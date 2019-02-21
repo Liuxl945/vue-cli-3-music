@@ -76,7 +76,7 @@ export function loadPlay() {
 export function savePlay(song) {
   let songs = Storage.get(PLAY_KEY, []);
   insertArray(songs, song, item => {
-    item.id === song.id
+    return item.id === song.id
   }, PLAY_MAX_LENGTH)
   Storage.set(PLAY_KEY, songs)
   return songs
@@ -85,7 +85,7 @@ export function savePlay(song) {
 export function saveFavorite(song) {
   let songs = Storage.get(FAVORITE_KEY, []);
   insertArray(songs, song, item => {
-    item.id === song.id
+    return item.id === song.id
   }, FAVORITE_MAX_LENGTH)
   Storage.set(FAVORITE_KEY, songs)
   return songs
@@ -100,5 +100,6 @@ export function deleteFavorite(song) {
   deleteFromArray(songs,item=>{
     return item.id === song.id
   })
+  Storage.set(FAVORITE_KEY, songs)
   return songs
 }
