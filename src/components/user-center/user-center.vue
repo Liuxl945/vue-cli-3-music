@@ -23,7 +23,9 @@
           </div>
         </scroll>
       </div>
-      <div class="no-result-wrapper"></div>
+      <div class="no-result-wrapper" v-show="noResult">
+        <no-result :title="noResultDesc"></no-result>
+      </div>
     </div>
   </transition>
 </template>
@@ -42,7 +44,8 @@ export default {
   components: {
     Switches,
     Scroll,
-    SongList
+    SongList,
+    NoResult
   },
   data() {
     return {
@@ -58,6 +61,18 @@ export default {
     };
   },
   computed: {
+    noResultDesc() {
+      if (this.currentIndex === 0) {
+        return "暂无收藏歌曲";
+      }
+      return "您还没有听过歌曲";
+    },
+    noResult() {
+      if (this.currentIndex === 0) {
+        return !this.favoriteList.length;
+      }
+      return !this.playHistory.length;
+    },
     ...mapGetters(["favoriteList", "playHistory"])
   },
   methods: {
@@ -80,6 +95,9 @@ export default {
     },
     random() {
       let list = this.currentIndex === 0 ? this.favoriteList : this.playHistory;
+      if (list.length === 0) {
+        return;
+      }
       list = list.map(song => {
         return new Song(song);
       });

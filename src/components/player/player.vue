@@ -102,7 +102,7 @@
     <audio
       ref="audio"
       :src="songsUrl"
-      @canplay="ready"
+      @play="ready"
       @error="error"
       @timeupdate="updateTime"
       @ended="end"
@@ -445,7 +445,8 @@ export default {
           this.songsUrl = `http://dl.stream.qqmusic.qq.com/${
             res.req_0.data.midurlinfo[0].purl
           }`;
-          setTimeout(() => {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
             this.$refs.audio.play();
           }, 1000);
         }
