@@ -35,13 +35,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getRecomend, getDiscList } from "@/api/recommend";
-import { ERR_OK } from "@/api/config";
+import { getRecomend, getDiscList } from "api/recommend";
+import { ERR_OK } from "api/config";
 import { playlistMixin } from "common/js/mixin";
 import { mapMutations } from "vuex";
-import Silder from "@/base/slider/slider";
-import Scroll from "@/base/scroll/scroll";
-import Loading from "@/base/loading/loading";
+import Silder from "base/slider/slider";
+import Scroll from "base/scroll/scroll";
+import Loading from "base/loading/loading";
 
 export default {
   mixins: [playlistMixin],

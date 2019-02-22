@@ -112,17 +112,17 @@
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import { prefixStyle } from "common/js/dom";
-import { getMusicResult, getLyric } from "@/api/songs";
-import { ERR_OK } from "@/api/config";
-import { playMode } from "@/common/js/config";
-import { playerMixin } from "@/common/js/mixin";
+import { getMusicResult, getLyric } from "api/songs";
+import { ERR_OK } from "api/config";
+import { playMode } from "common/js/config";
+import { playerMixin } from "common/js/mixin";
 import animations from "create-keyframe-animation";
 import { Base64 } from "js-base64";
 import LyricParser from "lyric-parser";
-import ProgressBar from "@/base/progress-bar/progress-bar";
-import Scroll from "@/base/scroll/scroll";
-import ProgressCircle from "@/base/progress-circle/progress-circle";
-import PlayList from "@/components/playlist/playlist";
+import ProgressBar from "base/progress-bar/progress-bar";
+import Scroll from "base/scroll/scroll";
+import ProgressCircle from "base/progress-circle/progress-circle";
+import PlayList from "components/playlist/playlist";
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
@@ -150,7 +150,14 @@ export default {
   created() {
     this.touch = {};
   },
+  mounted(){
+    document.body.addEventListener("click",this.clickFunc)
+  },
   methods: {
+    clickFunc(){
+      this.$refs.audio.play();
+      document.body.removeEventListener("click",this.clickFunc)
+    },
     showPlayList() {
       this.$refs.playlist.show();
     },
@@ -276,6 +283,7 @@ export default {
       }
       if (this.playlist.length === 1) {
         this.loop();
+        return false;
       } else {
         let index = this.currentIndex + 1;
         if (index === this.playlist.length) {
@@ -294,6 +302,7 @@ export default {
       }
       if (this.playlist.length === 1) {
         this.loop();
+        return false;
       } else {
         let index = this.currentIndex - 1;
         if (index === -1) {

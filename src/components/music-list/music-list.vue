@@ -25,14 +25,13 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import Scroll from "@/base/scroll/scroll";
-import Loading from "@/base/loading/loading";
-import songList from "@/base/song-list/song-list";
+import Scroll from "base/scroll/scroll";
+import Loading from "base/loading/loading";
+import songList from "base/song-list/song-list";
 
-import { playlistMixin } from "@/common/js/mixin";
+import { playlistMixin } from "common/js/mixin";
 import { mapActions } from "vuex";
-import { prefixStyle } from "@/common/js/dom";
-import { getMusicResult } from "@/api/songs";
+import { prefixStyle } from "common/js/dom";
 const transform = prefixStyle("transform");
 const backdrop = prefixStyle("backdrop-filter");
 

@@ -25,8 +25,8 @@
 <script type="text/ecmascript-6">
 import Scroll from "base/scroll/scroll";
 import Loading from "base/loading/loading";
-import { getTopList } from "@/api/rank";
-import { ERR_OK } from "@/api/config";
+import { getTopList } from "api/rank";
+import { ERR_OK } from "api/config";
 import { playlistMixin } from "common/js/mixin";
 import { mapMutations } from "vuex";
 

@@ -6,13 +6,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { ERR_OK } from "@/api/config";
-import { getSingerList } from "@/api/singer";
-import Singer from "@/common/js/singer";
+import { ERR_OK } from "api/config";
+import { getSingerList } from "api/singer";
+import Singer from "common/js/singer";
 import { mapMutations } from "vuex";
-import { playlistMixin } from "@/common/js/mixin";
+import { playlistMixin } from "common/js/mixin";
 
-import listView from "@/base/listview/listview";
+import listView from "base/listview/listview";
 
 const HOT_NAME = "热门";
 const HOT_SINGER_LENGTH = 10;

@@ -25,12 +25,12 @@
   </scroll>
 </template>
 <script type="text/ecmascript-6">
-import { getData } from "@/common/js/dom";
+import { getData } from "common/js/dom";
 const TITLE_HEIGHT = 30;
 const ANCHOR_HEIGHT = 18;
 
-import Scroll from "@/base/scroll/scroll";
-import Loading from "@/base/loading/loading";
+import Scroll from "base/scroll/scroll";
+import Loading from "base/loading/loading";
 export default {
   props: {
     data: {

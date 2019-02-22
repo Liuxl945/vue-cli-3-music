@@ -49,11 +49,11 @@
 
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import { playMode } from "@/common/js/config";
-import { playerMixin } from "@/common/js/mixin";
-import Scroll from "@/base/scroll/scroll";
+import { playMode } from "common/js/config";
+import { playerMixin } from "common/js/mixin";
+import Scroll from "base/scroll/scroll";
 import Confirm from "base/confirm/confirm";
-import addSong from "@/components/add-song/add-song";
+import addSong from "components/add-song/add-song";
 export default {
   mixins: [playerMixin],
   data() {

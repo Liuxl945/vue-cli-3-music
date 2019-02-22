@@ -12,6 +12,7 @@ module.exports = {
     config.resolve.alias
       .set('vue$', 'vue/dist/vue.esm.js')
       .set('@', resolve('src'))
+      .set('components', resolve("src/components"))
       .set('common', resolve("src/common"))
       .set('api', resolve("src/api"))
       .set('base', resolve("src/base"))

@@ -41,14 +41,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-import SearchBox from "@/base/search-box/search-box";
-import SearchList from "@/base/search-list/search-list";
-import { getHotKey } from "@/api/search";
+import SearchBox from "base/search-box/search-box";
+import SearchList from "base/search-list/search-list";
+import { getHotKey } from "api/search";
 import { ERR_OK } from "api/config";
-import Suggest from "@/components/suggest/suggest";
-import Confirm from "@/base/confirm/confirm";
+import Suggest from "components/suggest/suggest";
+import Confirm from "base/confirm/confirm";
 import TopTip from "base/top-tip/top-tip";
-import Scroll from "@/base/scroll/scroll";
+import Scroll from "base/scroll/scroll";
 
 import { mapActions } from "vuex";
 import { playlistMixin, searchMixin } from "common/js/mixin";

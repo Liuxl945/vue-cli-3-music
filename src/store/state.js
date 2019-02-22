@@ -5,7 +5,7 @@ import {
   loadPlay,
   loadSearch,
   loadFavorite
-} from "@/common/js/cache"
+} from "common/js/cache"
 
 const state = {
   singer: {},

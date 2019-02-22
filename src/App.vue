@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import MHeader from "@/components/m-header/m-header";
-import Tab from "@/components/tab/tab";
-import Player from "@/components/player/player";
+import MHeader from "components/m-header/m-header";
+import Tab from "components/tab/tab";
+import Player from "components/player/player";
 
 export default {
   name: "App",

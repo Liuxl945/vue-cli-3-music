@@ -1,7 +1,4 @@
 import Storage from "good-storage"
-import {
-  EXDEV
-} from "constants";
 
 const SEARCH_KEY = "__search__"
 const SEARCH_MAX_LENGTH = 15
@@ -19,6 +16,9 @@ const FAVORITE_MAX_LENGTH = 200
  * @param {Number}    maxLen 
  */
 function insertArray(arr, val, compare, maxLen) {
+  if(JSON.stringify(val) == "{}"){
+    return
+  }
   const index = arr.findIndex(compare)
   if (index === 0) {
     return

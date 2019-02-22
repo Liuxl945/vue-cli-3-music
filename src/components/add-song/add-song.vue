@@ -55,9 +55,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import SearchBox from "@/base/search-box/search-box";
-import Suggest from "@/components/suggest/suggest";
-import Switches from "@/base/switches/switches";
+import SearchBox from "base/search-box/search-box";
+import Suggest from "components/suggest/suggest";
+import Switches from "base/switches/switches";
 import TopTip from 'base/top-tip/top-tip';
 import { searchMixin } from "common/js/mixin";
 import SearchList from "base/search-list/search-list";

@@ -6,10 +6,10 @@ import {
 
 import {
   playMode
-} from "@/common/js/config";
+} from "common/js/config";
 import {
   shuffle
-} from "@/common/js/util";
+} from "common/js/util";
 
 export const playlistMixin = {
   computed: {

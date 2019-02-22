@@ -1,10 +1,10 @@
 import * as types from "./mutation-types"
 import {
   playMode
-} from "@/common/js/config"
+} from "common/js/config"
 import {
   shuffle
-} from "@/common/js/util"
+} from "common/js/util"
 
 import {
   saveSearch,
@@ -13,7 +13,7 @@ import {
   savePlay,
   saveFavorite,
   deleteFavorite
-} from "@/common/js/cache"
+} from "common/js/cache"
 import { EXDEV } from "constants";
 
 function findIndex(list, song) {
