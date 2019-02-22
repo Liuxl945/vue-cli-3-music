@@ -83,7 +83,6 @@ export default {
       this.$refs.playList && this.$refs.playList.refresh();
     },
     back() {
-      console.log(this.$router)
       this.$router.back();
     },
     switchItem(index) {

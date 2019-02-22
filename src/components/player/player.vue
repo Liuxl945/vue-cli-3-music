@@ -72,8 +72,12 @@
             <div class="icon i-right" :class="disableClass">
               <i class="icon-next" @click="next"></i>
             </div>
-            <div class="icon i-right" >
-              <i class="icon" @click="toggleFavorite(currentSong)" :class="getFavotiteIcon(currentSong)"></i>
+            <div class="icon i-right">
+              <i
+                class="icon"
+                @click="toggleFavorite(currentSong)"
+                :class="getFavotiteIcon(currentSong)"
+              ></i>
             </div>
           </div>
         </div>
@@ -150,13 +154,13 @@ export default {
   created() {
     this.touch = {};
   },
-  mounted(){
-    document.body.addEventListener("click",this.clickFunc)
+  mounted() {
+    document.body.addEventListener("click", this.clickFunc);
   },
   methods: {
-    clickFunc(){
+    clickFunc() {
       this.$refs.audio.play();
-      document.body.removeEventListener("click",this.clickFunc)
+      document.body.removeEventListener("click", this.clickFunc);
     },
     showPlayList() {
       this.$refs.playlist.show();
@@ -388,7 +392,7 @@ export default {
       };
     },
     ...mapMutations({
-      setFullScreen: "SET_FULL_SCREEN",
+      setFullScreen: "SET_FULL_SCREEN"
     }),
     ...mapActions(["savePlayHistory"])
   },
@@ -408,11 +412,7 @@ export default {
     percent() {
       return this.currentTime / this.currentSong.dration;
     },
-    ...mapGetters([
-      "fullScreen",
-      "playing",
-      "currentIndex",
-    ])
+    ...mapGetters(["fullScreen", "playing", "currentIndex"])
   },
   watch: {
     currentSong(newSong, oldSong) {
