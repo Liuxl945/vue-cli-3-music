@@ -108,10 +108,10 @@ app.get("/getSearch", (req, res) => {
 
 app.use(express.static('./dist'))
 
-module.exports = app.listen(8000,err=>{
+module.exports = app.listen(4000,err=>{
     if(err){
         console.log(err)
         return
     }
-    console.log("http server is listening at localhost:8000")
+    console.log("http server is listening at localhost:4000")
 })

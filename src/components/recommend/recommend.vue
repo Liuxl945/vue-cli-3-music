@@ -4,7 +4,7 @@
       <div>
         <div v-if="recomends.length" class="slider-wapper">
           <silder>
-            <div v-for="item in recomends">
+            <div v-for="(item,index) in recomends" :key="index">
               <a :href="item.linkUrl">
                 <img :src="item.picUrl">
               </a>
@@ -14,7 +14,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌曲推荐</h1>
           <ul >
-            <li @click="selectItem(item)" v-for="item in discList" class="item">
+            <li @click="selectItem(item)" v-for="(item,index) in discList" class="item" :key="index">
               <div class="icon">
                 <img v-lazy="item.imgurl" width="60" height="60">
               </div>

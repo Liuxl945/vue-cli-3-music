@@ -42,6 +42,7 @@
                   class="text"
                   :class="{'current':currentLineNum === index}"
                   v-for="(line,index) in currentLyric.lines"
+                  :key="index"
                 >{{line.txt}}</p>
               </div>
             </div>
@@ -429,6 +430,7 @@ export default {
         .then(res => {
           if (res.code === ERR_OK) {
             let Lyric = Base64.decode(res.lyric);
+            console.log(Lyric)
             this.currentLyric = new LyricParser(Lyric, res => {
               this.currentLineNum = res.lineNum;
               if (res.lineNum > 5) {
