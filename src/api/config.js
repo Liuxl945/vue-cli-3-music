@@ -6,6 +6,8 @@ export const commonParams = {
   format: 'json'
 }
 
+export const API_URL = "http://m.yingliyingli.com"
+
 export const options = {
   param: 'jsonpCallback'
 }

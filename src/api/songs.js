@@ -2,12 +2,12 @@ import jsonp from '@/common/js/jsonp'
 import axios from 'axios'
 import {
   commonParams,
-  options
+  API_URL
 } from './config'
 
 
 export function getMusicResult(songmid) {
-  const url = '/getMusicResult'
+  const url = API_URL + '/getMusicResult'
 
   const data = Object.assign({}, commonParams, {
     hostUin: 0,
@@ -26,7 +26,7 @@ export function getMusicResult(songmid) {
 }
 
 export function getLyric(mid) {
-  const url = '/Lyric'
+  const url = API_URL + '/Lyric'
 
   const data = Object.assign({}, commonParams, {
     songmid: mid,

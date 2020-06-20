@@ -2,7 +2,8 @@ import jsonp from '@/common/js/jsonp'
 import axios from 'axios'
 import {
   commonParams,
-  options
+  options,
+  API_URL
 } from './config'
 
 export function getRecomend() {
@@ -18,7 +19,7 @@ export function getRecomend() {
 }
 
 export function getDiscList() {
-  const url = '/getDiscList'
+  const url = API_URL + '/getDiscList'
   const data = Object.assign({}, commonParams, {
     platform: 'yqq.json',
     hostUin: 0,
@@ -41,7 +42,7 @@ export function getDiscList() {
 }
 
 export function getSongList(disstid) {
-  const url = '/disstList'
+  const url = API_URL + '/disstList'
 
   const data = Object.assign({}, commonParams, {
     disstid,

@@ -1,12 +1,13 @@
 import jsonp from 'common/js/jsonp'
 import {
   commonParams,
-  options
+  options,
+  API_URL
 } from './config'
 import axios from "axios"
 
 export function getTopList() {
-  const url = '/TopList'
+  const url = API_URL + '/TopList'
 
   const data = Object.assign({}, commonParams, {
     uin: 0,
